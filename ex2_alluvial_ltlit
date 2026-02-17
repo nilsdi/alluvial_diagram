@@ -1,0 +1,59 @@
+
+
+#%%
+import pandas as pd
+
+from alluvial_diagram.alluvial_chart import AlluvialChart
+
+data_path = "data/lifetimes_lit_rev.xlsx"
+
+by_ref = pd.read_excel(data_path, sheet_name="by ref", header = 1, nrows = 32)
+display(by_ref)
+
+#%%
+categories = ["World region", "Lifetime estimation method (as classified)", "Type of retrievable lifetime estimate", "Spatial coverage (as classified)" ]
+categories_short_name = ["World region", "Estimation method", "Type of estimate", "Spatial coverage" ]
+nodes = {
+    "World region": {
+        cat: {"facecolor": "lightgrey"}
+        for cat in by_ref["World region"].dropna().unique().tolist()
+    },
+    "Estimation method": {
+        "Inflow-driven modelling": {"facecolor": "green"},
+        "Stock survival analysis ": {"facecolor": "orange"},
+        "End-of-life records analysis": {"facecolor": "blue"},
+    },
+    "Type of estimate": {
+        cat: {"facecolor": "lightgrey"}
+        for cat in by_ref["Type of retrievable lifetime estimate"].dropna().unique().tolist()
+    },
+    "Spatial coverage": {
+        cat: {"facecolor": "lightgrey"}
+        for cat in by_ref["Spatial coverage (as classified)"].dropna().unique().tolist()
+    }
+}
+by_ref["alluvial_id"] = [
+    f"{authors.split(',')[0]} et al {year}" for year, authors in zip(by_ref["Publication year"],by_ref["Author(s)"])
+    ]
+print(by_ref["alluvial_id"])
+line_data = {
+    by_ref["alluvial_id"].iloc[i]: {
+        cat_name: {"node": by_ref[cat].iloc[i]}
+        for cat_name, cat in zip(categories_short_name, categories)
+    }
+    for i in range(len(by_ref))
+} 
+# sort by "Estimation method"
+line_data = dict(sorted(line_data.items(), key=lambda item: item[1]["Estimation method"]["node"]))
+print(line_data)
+
+
+AlluvialChart(
+    line_data,
+    nodes,
+    sorted_category="Estimation method",
+    line_color_mode="sorted_category",
+    plot_id=True,
+    dev_mode=False,
+)
+# %%
