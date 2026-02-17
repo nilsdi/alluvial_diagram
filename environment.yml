@@ -1,0 +1,9 @@
+name: alluvial_diagram
+channels:
+  - defaults
+dependencies:
+  - python=3.14
+  - ipykernel
+  - matplotlib
+  - pandas
+  - openpyxl
