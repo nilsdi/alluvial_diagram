@@ -19,9 +19,12 @@ nodes = {
         for cat in by_ref["World region"].dropna().unique().tolist()
     },
     "Estimation method": {
-        "Inflow-driven modelling": {"facecolor": "green"},
-        "Stock survival analysis ": {"facecolor": "orange"},
-        "End-of-life records analysis": {"facecolor": "blue"},
+        "Inflow-driven modelling": {"facecolor": "xkcd:bluish"},
+        "Aggregate cohort tracking": {"facecolor": "xkcd:sea blue"},
+        "Unit-level longitudinal tracking": {"facecolor": "xkcd:tree green"},
+        "Demolition sampling": {"facecolor": "xkcd:tangerine"},
+        "Demolition accounting": {"facecolor": "xkcd:saffron"},
+
     },
     "Type of estimate": {
         cat: {"facecolor": "lightgrey"}
@@ -35,7 +38,7 @@ nodes = {
 by_ref["alluvial_id"] = [
     f"{authors.split(',')[0]} et al {year}" for year, authors in zip(by_ref["Publication year"],by_ref["Author(s)"])
     ]
-print(by_ref["alluvial_id"])
+#print(by_ref["alluvial_id"])
 line_data = {
     by_ref["alluvial_id"].iloc[i]: {
         cat_name: {"node": by_ref[cat].iloc[i]}
