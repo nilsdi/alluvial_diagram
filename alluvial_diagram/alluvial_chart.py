@@ -35,6 +35,7 @@ class AlluvialChart:
         extend_lines_into_outside_nodes: bool = False,
         figsize: tuple[float, float] = (10, 6),
         dev_mode: bool = False,
+        save_path: str = None,
     ) -> None:
         """
         Args:
@@ -68,6 +69,7 @@ class AlluvialChart:
         self.extend_lines_into_outside_nodes = extend_lines_into_outside_nodes
         self.figsize = figsize
         self.dev_mode = dev_mode
+        self.save_path = save_path
         self.fig, self.ax = plt.subplots(figsize=self.figsize)
 
         self.make_nodes()
@@ -76,6 +78,7 @@ class AlluvialChart:
         self.set_line_color()
         self.plot()
         self.show_figure()
+        
 
     def make_nodes(self) -> None:
         """
@@ -539,6 +542,8 @@ class AlluvialChart:
         self.ax.set_xlim(x_min, 1)
         self.ax.set_ylim(0, 1)
         plt.show()
+        if self.save_path:
+            self.fig.savefig(self.save_path, bbox_inches='tight')
         return
 
 
